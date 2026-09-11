@@ -1,0 +1,1 @@
+import{c as e,n as t,r as n,t as r}from"./app-KGVn0p9Q.js";var i={};function a(r,i,a,o,s,c){return e(),n(`div`,null,[...i[0]||=[t(`h1`,null,`这是一个测试自定义组件的demo`,-1)]])}var o=r(i,[[`render`,a]]);export{o as default};

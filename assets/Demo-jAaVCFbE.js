@@ -1,0 +1,1 @@
+import{c as e,r as t,s as n,t as r}from"./app-KGVn0p9Q.js";var i=n({name:`demo`});function a(n,r,i,a,o,s){return e(),t(`div`,null,`233`)}var o=r(i,[[`render`,a]]);export{o as default};
