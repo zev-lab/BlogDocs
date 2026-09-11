@@ -4,7 +4,7 @@
   "description": "blog",
   "type": "module",
   "engines": {
-    "node": "24.x"
+    "node": "22.x"
   },
   "dependencies": {},
   "devDependencies": {
