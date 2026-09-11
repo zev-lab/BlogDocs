@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "blog",
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {},
   "devDependencies": {
     "@vue/component-compiler-utils": "^3.3.0",

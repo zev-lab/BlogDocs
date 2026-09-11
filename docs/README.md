@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /logo.svg
+heroImage: /logo1.svg
 heroText: 博客
 tagline: 记录美好生活
 

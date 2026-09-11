@@ -2,7 +2,7 @@
 sidebar: false
 ---
 
-## vue,angular,ract 的优缺点
+# vue,angular,ract 的优缺点
 **angular**
 
 >**优点:** 单项数据绑定，必须使用typeScript，使用angular-语言-服务，详细的文档，mvvm，特别针对大型项目创建的结构和架构<br>

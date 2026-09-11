@@ -8,7 +8,7 @@ import { path } from "@vuepress/utils";
 
 import navbar from "./configs/navbar";
 
-let base: any = "/BlogDocs/";
+let base: any = "/";
 
 if (process.env.BASE) {
   base = process.env.BASE;
@@ -27,6 +27,8 @@ export default {
     }),
   ],
   theme: defaultTheme({
+    logo: "/logo1.svg",
+    logoDark: "/logo2.svg",
     sidebarDepth: 2, // 侧边栏显示深度，默认为1，即显示一级标题
     sidebar: sidebar,
     navbar: navbar.zh,
