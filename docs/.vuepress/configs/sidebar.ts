@@ -104,8 +104,17 @@ export default {
   ],
   "/rust/": [
     {
-      text: "Rust",
-      children: ["/rust/index.md"],
+      text: "Rust 从入门到精通",
+      children: [
+        "/rust/index.md",
+        "/rust/basics.md",
+        "/rust/ownership.md",
+        "/rust/structs_enums.md",
+        "/rust/collections.md",
+        "/rust/error_handling.md",
+        "/rust/concurrency.md",
+        "/rust/advanced.md",
+      ],
     },
   ],
   "/computer/": [

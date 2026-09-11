@@ -1,78 +1,76 @@
-# Rust 基础入门与核心指南
+# Rust 入门与环境搭建
 
-Rust 是一门赋予每个人构建可靠且高效软件能力的系统级编程语言。它在保证内存安全的同时，提供了媲美 C/C++ 的性能。
+欢迎来到“Rust 从入门到精通”系列教程！Rust 是一门赋予每个人构建可靠且高效软件能力的编程语言。
 
-## 1. 为什么选择 Rust？
+## Rust 简介与历史
 
-- **高性能**：Rust 没有传统的垃圾回收机制 (GC) 和庞大的运行时，速度极快且内存利用率高，可以胜任性能要求极高的服务。
-- **可靠性**：Rust 丰富的类型系统和独创的**所有权模型**在编译期就保证了内存安全和线程安全，消除了诸多常见的 bug（如空指针解引用、数据竞争等）。
-- **生产力**：拥有一流的工具链（如包管理器 Cargo）、优秀的官方文档、以及业界闻名的“极其友好的编译器错误提示”。
+Rust 的设计目标是提供内存安全、高并发以及出色的性能，同时避免传统系统级语言（如 C 和 C++）中常见的内存溢出和空指针等安全问题。Rust 最初由 Mozilla 的员工 Graydon Hoare 于 2006 年作为一个个人项目开始研发。2009 年，Mozilla 开始赞助该项目，并在 2015 年发布了 Rust 1.0 的稳定版本。
 
-## 2. 核心机制：所有权 (Ownership)
+Rust 的核心优势：
+- **无数据竞争**：通过所有权（Ownership）机制在编译期保证内存和线程安全。
+- **高性能**：没有垃圾回收器（GC）和运行时（Runtime），可以直接调用 C 代码。
+- **强大的工具链**：Cargo 提供了包管理、构建、测试和文档生成等一站式服务。
 
-所有权是 Rust 最独特的特性，它让 Rust 无需垃圾回收即可保障内存安全。所有权的系统遵循以下三条核心规则：
+## 安装 Rust
 
-1. Rust 中的每一个值都有一个被称为其**所有者**（owner）的变量。
-2. 一个值在任一时刻**有且只有一个**所有者。
-3. 当所有者（变量）离开其作用域，这个值将被自动丢弃（Drop，释放内存）。
+在绝大多数主流操作系统上，安装 Rust 最简单的方法是使用 `rustup`。`rustup` 是 Rust 的安装和版本管理工具。
 
-## 3. 借用与引用 (References & Borrowing)
+### Linux 或 macOS
 
-为了避免每次传递参数都转移所有权，Rust 提供了**引用（Reference）**机制，允许在不获取所有权的情况下使用值。这个概念在 Rust 中被称为**借用（Borrowing）**。
+打开终端并运行以下命令：
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+### Windows
+
+访问 [Rust 官方网站](https://www.rust-lang.org/tools/install) 并下载 `rustup-init.exe`。运行该程序并按照屏幕上的提示进行操作。如果遇到依赖问题，可能需要安装 [Visual Studio C++ Build tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)。
+
+### 验证安装
+
+安装完成后，可以在终端或命令提示符中输入以下命令来验证是否安装成功：
+
+```bash
+rustc --version
+cargo --version
+```
+
+## Cargo 简介
+
+Cargo 是 Rust 的构建系统和包管理器。它能够：
+- 构建你的代码。
+- 下载代码依赖的库（crate）。
+- 编译这些库。
+
+## Hello World！
+
+让我们使用 Cargo 来创建我们的第一个 Rust 程序。
+
+1. 打开终端，进入你的项目目录。
+2. 运行以下命令创建一个新项目：
+
+```bash
+cargo new hello_rust
+cd hello_rust
+```
+
+3. 查看生成的文件。`Cargo.toml` 是项目的配置文件。`src/main.rs` 是源代码文件。
+
+打开 `src/main.rs`，你会看到 Cargo 已经为我们生成了一段代码：
 
 ```rust
 fn main() {
-    let s1 = String::from("hello");
-    
-    // 传递 s1 的不可变引用，而不是所有权
-    let len = calculate_length(&s1);
-    
-    println!("The length of '{}' is {}.", s1, len);
-}
-
-// 接收一个 String 的引用作为参数
-fn calculate_length(s: &String) -> usize {
-    s.len()
-} // 这里 s 离开作用域，但因为它并不拥有数据，所以不会发生内存释放
-```
-
-## 4. 变量的可变性 (Mutability)
-
-在 Rust 中，变量默认是**不可变的 (immutable)**。如果需要修改变量，必须使用 `mut` 关键字。
-
-```rust
-fn main() {
-    let mut x = 5;
-    println!("The value of x is: {}", x);
-    x = 6; // 因为声明了 mut，所以允许修改
-    println!("The value of x is: {}", x);
+    println!("Hello, world!");
 }
 ```
 
-## 5. 项目管理神器：Cargo
+4. 运行程序！使用以下命令编译并运行：
 
-Cargo 是 Rust 的构建系统和包管理器。绝大多数 Rustacean 使用 Cargo 来管理他们的 Rust 项目。
-
-### 常用命令
-
-- `cargo new <project_name>`：创建一个新的 Rust 项目。
-- `cargo build`：编译项目（在 `target/debug/` 下生成可执行文件）。
-- `cargo build --release`：以发布模式编译项目，进行深度优化。
-- `cargo run`：一步完成编译并运行。
-- `cargo check`：快速检查代码是否能通过编译（不生成可执行文件，速度快）。
-- `cargo test`：运行项目中的单元测试。
-
-## 6. Hello World 实例
-
-```rust
-// 文件路径：src/main.rs
-
-fn main() {
-    // 宏调用以惊叹号 ! 结尾
-    println!("Hello, Rustacean!");
-}
+```bash
+cargo run
 ```
 
-## 结语
+你将在控制台看到输出：`Hello, world!`。
 
-学习 Rust 是一次重塑编程思维的旅程。它的学习曲线前期相对陡峭，因为编译器会强迫你写出更加安全、严谨的代码。但一旦迈过“和编译器作斗争”的阶段，你将获得编写零成本抽象和绝对安全代码的极致体验！
+恭喜你！你已经成功迈出了学习 Rust 的第一步！
