@@ -1,237 +1,116 @@
+# HTML5 Canvas 基础入门与实战
 
-# canvas
+`<canvas>` 是 HTML5 新增的，用于通过 JavaScript 绘制 2D 甚至 3D 图形的元素。从简单的数据图表、页面背景，到复杂的网页游戏、在线画板，Canvas 都有着极其广泛的应用。
+
+## 1. 初始化 Canvas 画布
+
+在 HTML 中添加 `<canvas>` 标签，必须设置宽和高。
+> 注意：不要使用 CSS 来设置 `<canvas>` 的宽高，否则会导致画布内部的像素点被拉伸变形。应当直接使用标签的 `width` 和 `height` 属性。
 
 ```html
-<!DOCTYPE html>
-<html lang="zh-CN">
+<canvas id="myCanvas" width="500" height="400">
+    您的浏览器不支持 Canvas，请升级浏览器。
+</canvas>
+```
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <style>
-        body {
-            text-align: center;
-        }
+接着，在 JS 中获取画布，并获取 **2D 渲染上下文 (Context)**：
+```javascript
+const cvs = document.getElementById('myCanvas');
+const ctx = cvs.getContext('2d'); // 获取 2D 绘图环境，几乎所有的绘图 API 都挂载在 ctx 上
+```
 
-        canvas {
-            box-shadow: 5px 5px 5px gray;
-            border: 1px solid #999;
-        }
-    </style>
-</head>
+## 2. 基础图形绘制
 
-<body>
-    <canvas id="canvas" width="900" height="800"></canvas>
-</body>
-<script>
-    var cv = document.getElementById('canvas')
-    var ctx = cv.getContext('2d');
+### 2.1 绘制矩形
+Canvas 提供了直接绘制矩形的简便方法：
+```javascript
+// 设置填充颜色
+ctx.fillStyle = 'red';
+// 绘制填充矩形: fillRect(x, y, width, height)
+ctx.fillRect(50, 50, 100, 100); 
 
+// 设置描边颜色和线宽
+ctx.strokeStyle = 'blue';
+ctx.lineWidth = 5;
+// 绘制描边矩形: strokeRect(x, y, width, height)
+ctx.strokeRect(200, 50, 100, 100);
+```
+
+### 2.2 绘制路径 (直线与多边形)
+除矩形外，其他所有图形基本都是通过**路径 (Path)** 绘制出来的。
+```javascript
+ctx.beginPath();      // 开启一条新路径，清除之前的路径记录
+ctx.moveTo(100, 200); // 移动画笔到起点 (x, y)
+ctx.lineTo(200, 300); // 画一条线到点 (x, y)
+ctx.lineTo(100, 400); // 再画一条线到点 (x, y)
+ctx.closePath();      // 闭合路径 (自动将终点与起点连接起来)
+
+ctx.fillStyle = 'green';
+ctx.fill();           // 执行填充
+```
+
+### 2.3 绘制圆形/圆弧
+使用 `arc` 方法：`arc(x, y, radius, startAngle, endAngle, anticlockwise)`
+```javascript
+ctx.beginPath();
+// 绘制一个完整的圆：起点坐标(300, 300), 半径50, 从0弧度画到2π弧度
+ctx.arc(300, 300, 50, 0, 2 * Math.PI);
+ctx.fillStyle = 'orange';
+ctx.fill();
+```
+
+## 3. Canvas 中的动画基础
+
+Canvas 本身并不具备“动画”和“元素层级”的概念，画上去的东西就是一堆像素，画完了就固定了。
+要想实现动画，核心原理是：**清除画布 -> 重绘 -> 清除画布 -> 重绘**，利用人眼的视觉暂留形成动画。
+
+结合 `requestAnimationFrame` 可以实现流畅的动画：
+```javascript
+let x = 0;
+
+function draw() {
+    // 1. 清除整张画布
+    ctx.clearRect(0, 0, cvs.width, cvs.height);
+    
+    // 2. 绘制新一帧的内容
     ctx.beginPath();
-    ctx.fillStyle = 'white'
-    ctx.fillRect(0, 0, cv.width, cv.height);
-    ctx.fill();
-    // canvas上绘制图形的交互
+    ctx.arc(x, 100, 30, 0, 2 * Math.PI);
     ctx.fillStyle = 'blue';
-    ctx.fillRect(300, 450, 200, 200);
-    var lock = true;
-    ctx.beginPath();
-    ctx.fillStyle = 'green';
-    ctx.arc(400, 200, 150, 0, 2 * Math.PI)
     ctx.fill();
-    cv.onclick = function(e) {
-        var e = e || window.event;
-        var x = e.clientX - this.offsetLeft;
-        var y = e.clientY - this.offsetTop;
+    
+    // 3. 改变状态
+    x += 2;
+    if(x > cvs.width) x = 0; // 越界回到起点
+    
+    // 4. 请求下一帧
+    requestAnimationFrame(draw);
+}
 
-        if (x >= 300 && x <= 500 && y >= 450 && y <= 650) {
-            cv.width = cv.width;
-            ctx.beginPath();
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0, 0, cv.width, cv.height);
-            ctx.fill();
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(300, 450, 200, 200);
-            var lock = true;
-            ctx.beginPath();
-            ctx.fillStyle = 'green';
-            ctx.arc(400, 200, 150, 0, 2 * Math.PI)
-            ctx.fill();
-        }
-        var s = gg(x - 400, y - 200);
-        if (s <= 150) {
-            ctx.beginPath();
-            ctx.fillStyle = 'red'
-            ctx.fillRect(0, 0, cv.width, cv.height);
-            ctx.fill();
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(300, 450, 200, 200);
-            var lock = true;
-            ctx.beginPath();
-            ctx.fillStyle = 'green';
-            ctx.arc(400, 200, 150, 0, 2 * Math.PI)
-            ctx.fill();
-        }
-    }
-
-
-    function gg(w, h) {
-        return Math.sqrt(Math.pow(w, 2) + Math.pow(h, 2), 2)
-    }
-</script>
-
-</html>
+draw(); // 启动动画
 ```
 
-### canvas鼠标移动
+## 4. Canvas 事件交互 (拖拽实战)
 
-```js
-<!DOCTYPE html>
-<html lang="zh-CN">
+由于 Canvas 里面画出来的图形不是 DOM 节点，无法像普通 DOM 那样直接通过 `onclick` 绑定事件。
+要在 Canvas 中实现对图形的拖拽，原理是：
+1. 监听 Canvas 元素的鼠标事件 (`mousedown`, `mousemove`, `mouseup`)。
+2. 每次鼠标事件触发时，获取鼠标在 Canvas 内的坐标。
+3. 利用数学几何公式，判断鼠标坐标是否落入了某个图形的边界内部。
+4. 如果落在内部，则在 `mousemove` 时更新该图形的坐标参数，并不断清屏重绘。
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
-    <canvas id="canvas" width="300" height="300"></canvas>
-</body>
-<script type="text/javascript">
-    var cv = document.getElementById('canvas');
-    var ctx = cv.getContext('2d');
-
-    function Keymove(x, y, w, h, c) {
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.c = c;
+```javascript
+// 简单示例思路
+cvs.addEventListener('mousedown', function(e) {
+    const mouseX = e.clientX - cvs.offsetLeft;
+    const mouseY = e.clientY - cvs.offsetTop;
+    
+    // 假设我们有一个正方形，坐标是 rect.x, rect.y，宽高是 rect.w, rect.h
+    // 判断鼠标是否点击在了正方形内
+    if (mouseX >= rect.x && mouseX <= rect.x + rect.w && 
+        mouseY >= rect.y && mouseY <= rect.y + rect.h) {
+        // ...执行拖拽逻辑，绑定 mousemove 重绘
     }
-    Keymove.prototype.cks = function() {
-        ctx.beginPath();
-        ctx.fillStyle = this.c;
-        ctx.rect(this.x, this.y, this.w, this.h)
-        ctx.fill();
-    };
-
-    var km = new Keymove(0, 0, 100, 100, 'white');
-
-    document.onkeydown = function(e) {
-        var e = e || window.event;
-        var dir = e.keyCode;
-        if (dir == 38) {
-            this.y -= 10;
-        }
-        if (dir == 40) {
-            this.y += 10;
-        }
-        if (dir == 36) {
-
-        }
-        if (dir == 37) {
-
-        }
-        if (dir == 39) {
-
-        }
-    }
-</script>
-
-</html>
+});
 ```
 
-### canvas拖拽
-
-```js
-<!DOCTYPE html>
-<html lang="zh-CN">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <style media="screen">
-        body {
-        text-align: center;
-    }
-
-    canvas {
-        box-shadow: 5px 5px 5px gray;
-        border: 1px solid #999;
-        cursor: url('./橡皮.cur'), auto;
-    }
-
-    span,
-    select {
-        vertical-align: top;
-        margin-left: 10px;
-    }
-
-    .box {
-        /* width: 144px; */
-        display: inline-block;
-        margin-left: 50px;
-    }
-    </style>
-</head>
-
-<body>
-    <canvas id="canvas" width="800" height="800"></canvas>
-</body>
-<script type="text/javascript">
-    var cv = document.getElementById('canvas')
-    var ctx = cv.getContext('2d')
-
-    function Rect(x, y, w, h, c) {
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.c = c;
-    }
-    Rect.prototype.draw = function(style) {
-        ctx.beginPath();
-        ctx.rect(this.x, this.y, this.w, this.y)
-        if (style == 'fill') {
-            ctx.fillStyle = this.c
-        } else {
-            ctx.strokeStyle = this.c
-        }
-        ctx[style]();
-    };
-    var rect = new Rect(200, 50, 100, 100, 'blue');
-    rect.draw('fill');
-    cv.onmousedown = function(e) {
-        var e = e || window.event;
-        var dx = e.clientX - this.offsetLeft;
-        var dy = e.clientY - this.offsetTop;
-        if (dx >= rect.x && dx <= rect.x + rect.w && dy >= rect.y && dy <= rect.y + rect.h) {
-            // 获取鼠标相对于rect的坐标
-            dx -= rect.x;
-            dy -= rect.y;
-            cv.onmousemove = function(e) {
-                var e = e || window.event;
-                rect.x = e.clientX - dx - this.offsetLeft;
-                rect.y = e.clientY - dy - this.offsetTop;
-                cv.width = cv.width;
-                rect.draw('fill');
-            }
-
-        }
-    }
-    cv.onmouseup = function() {
-        cv.onmousemove = null;
-    }
-</script>
-
-</html>
-```
-
-
-
+理解 Canvas 就是理解“逐帧渲染”的图形学思想，这是前端进阶游戏开发和数据可视化的重要基石。

@@ -1,67 +1,102 @@
----
-  title: 算法
----
+# JavaScript 算法基础：排序算法解析
 
-## 插入排序
+在编程面试与日常算法训练中，排序算法是不可绕过的基本功。本文将利用 JavaScript 详细图解两种最常见、最基础的排序算法：**冒泡排序 (Bubble Sort)** 和 **插入排序 (Insertion Sort)**。
 
-```js
-  var arr = [2,1,3,6,8,2,0,5,21,5,33,7,8]
-    function insertionStor(arr){
-        var len = arr.length;
-        var perIndex,current;
-        for(var i = 1;i<len;i++){
-            perIndex = i-1;
-            current = arr[i];
-            while(perIndex >= 0 && arr[perIndex] > current){
-                arr[perIndex+1] = arr[perIndex];
-                perIndex--;
+## 1. 冒泡排序 (Bubble Sort)
+
+**核心思想**：
+冒泡排序正如其名，像水底的气泡一样，每一轮遍历都通过“两两比较、交换位置”，将当前未排序部分的最大值（或最小值）像气泡一样“浮”到数组的末端。
+
+**实现思路**：
+- 外层循环控制需要经过多少轮“冒泡”。对于长度为 N 的数组，需要走 `N-1` 轮。
+- 内层循环控制每一轮的两两对比。每走完一轮，末端就会多出一个确定的最大值，因此内层循环比对的次数每次都在减少。
+
+### 代码实现
+
+```javascript
+function bubbleSort(arr) {
+    const len = arr.length;
+    
+    // 外层循环：控制比较的轮数，len - 1 轮
+    for (let i = 0; i < len - 1; i++) {
+        
+        // 内层循环：两两比较。
+        // 因为每轮结束后，最后 i 个元素已经是有序的最大值，无需再比，所以是 len - 1 - i
+        for (let j = 0; j < len - 1 - i; j++) {
+            
+            // 如果前面的大于后面的，则交换位置 (排升序)
+            if (arr[j] > arr[j + 1]) {
+                let temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                
+                // ES6 解构赋值交换更简洁：
+                // [arr[j], arr[j+1]] = [arr[j+1], arr[j]];
             }
-            arr[perIndex+1] = current;
         }
-          
-        return console.log(arr);
     }
-    insertionStor(arr);
+    return arr;
+}
+
+const testArr = [20, 3, 99, 17, 57, 10, 2];
+console.log("冒泡排序结果:", bubbleSort(testArr));
+// 输出: [2, 3, 10, 17, 20, 57, 99]
 ```
 
+**复杂度分析**：
+- 时间复杂度：平均和最坏情况为 `O(n^2)`。
+- 空间复杂度：`O(1)`，只需要几个临时变量。
 
-## 冒泡排序
+---
 
-```js
-//对数组中元素进行排序
-var arr = [20, 3, 99, 17, 57];
-//按照从小到大的顺序进行排序
-//从元素中找到当前的最大元素,将它添加到新数组中
-// var newArr = []; //用来存放排序后的元素
-// for (var j = 0; j < arr.length; j++) {
-//     var max = arr[0];
-//     for (var i = 0;i<arr.length; i++) {
-//         if (max < arr[i]) {
-//             max = arr[i];
-//         }
-//         j--;
-//     }
-//     newArr.unshift(max);
-//     arr.splice( arr.indexOf(max),1)
-// }
-// console.log(newArr)
+## 2. 插入排序 (Insertion Sort)
 
-//如何交换两个变量的值
-	// var a = 10,
-	//     b = 20;
-	// var t = a;
-	// a = b;
-	// b = t;
+**核心思想**：
+插入排序类似于我们日常生活中打扑克牌时的“理牌”过程。我们将数组分为“已排序部分”和“未排序部分”。一开始默认第一个元素是已排序的，然后将后面的元素逐个抽出，在“已排序部分”中从后往前扫描，找到合适的位置插入进去。
 
-//冒泡排序:通过两两比价,位置交换,将最大或最小的元素放在末尾实现排序
-	for(var j=0;j<arr.length-1;j++){//五个数比四回结果就出来了
-		for(var i=0;i<arr.length-1-j;i++){
-			if(arr[i] > arr[i+1]){ //如果第一个数比第二个数大,那么交换两个数的位置.
-				var t= arr[i];
-				arr[i] = arr[i+1];
-				arr[i+1] = t;
-			}
-		}
-	}
-console.log(arr);
+**实现思路**：
+- 假设第一个元素是有序的，从第二个元素开始（索引为 1）向后遍历。
+- 将当前考察的元素存为 `current`。
+- 与其前面已排序的元素逐一比对（从右向左）。
+- 如果前面的元素比 `current` 大，则把该元素往后挪一个位置，腾出空间。
+- 直到找到比 `current` 小的元素（或者到达头部），将 `current` 插入该位置。
+
+### 代码实现
+
+```javascript
+function insertionSort(arr) {
+    const len = arr.length;
+    let preIndex, current;
+    
+    // 外层循环：从第二个元素开始，逐个抽出待插入的牌
+    for (let i = 1; i < len; i++) {
+        preIndex = i - 1; // 已排序部分最后一个元素的索引
+        current = arr[i]; // 当前抽出的待比较的牌
+        
+        // 内层循环：在已排序部分从后往前扫描
+        // 条件：索引不越界，且扫描到的元素大于 current
+        while (preIndex >= 0 && arr[preIndex] > current) {
+            // 前面的大牌往后挪一位，腾出坑位
+            arr[preIndex + 1] = arr[preIndex];
+            preIndex--; // 继续往前扫描
+        }
+        
+        // 循环结束时，preIndex 的后一个位置就是腾出来的合适坑位
+        // 将抽出的牌安插进去
+        arr[preIndex + 1] = current;
+    }
+    
+    return arr;
+}
+
+const testArr2 = [2, 1, 3, 6, 8, 2, 0, 5, 21, 5, 33, 7];
+console.log("插入排序结果:", insertionSort(testArr2));
+// 输出: [0, 1, 2, 2, 3, 5, 5, 6, 7, 8, 21, 33]
 ```
+
+**复杂度分析**：
+- 时间复杂度：平均和最坏情况为 `O(n^2)`；最好情况（数组已经是有序的）为 `O(n)`。
+- 空间复杂度：`O(1)`。
+
+**冒泡与插入的对比**：
+两者的时间复杂度处于同一量级，但在实际大部分乱序数组中，**插入排序的性能通常要优于冒泡排序**。因为冒泡排序频繁进行变量交换（需要 3 次赋值指令），而插入排序主要是向后覆盖挪位（只需要 1 次赋值指令）。
