@@ -13,16 +13,16 @@ jobs:
 
     steps:     
       # 步骤一 拉取仓库代码    
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           # 选择要使用的 node 版本
-          node-version: '16'
+          node-version: '24'
 
       # 运行构建脚本
       - name: Build VuePress site
