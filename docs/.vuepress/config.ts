@@ -1,5 +1,6 @@
 import { defaultTheme } from "@vuepress/theme-default";
 import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
+import { viteBundler } from "@vuepress/bundler-vite";
 
 import sidebar from "./configs/sidebar";
 
@@ -19,16 +20,10 @@ export default {
   title: "学无止境",
   description: "这是我的第一个 VuePress 站点",
   base: base,
+  bundler: viteBundler(),
   plugins: [
     registerComponentsPlugin({
       componentsDir: path.resolve(__dirname, "./components"),
-      // 配置项
-      /*  components: {
-        ImprotModules: path.resolve(
-          __dirname,
-          "./components/ImprotModules.vue"
-        ),
-      }, */
     }),
   ],
   theme: defaultTheme({
