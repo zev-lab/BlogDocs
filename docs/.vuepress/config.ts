@@ -1,6 +1,7 @@
 import { defaultTheme } from "@vuepress/theme-default";
 import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
 import { viteBundler } from "@vuepress/bundler-vite";
+import { templateCompilerOptions } from "@tresjs/core";
 
 import sidebar from "./configs/sidebar";
 
@@ -20,7 +21,11 @@ export default {
   title: "学无止境",
   description: "这是我的第一个 VuePress 站点",
   base: base,
-  bundler: viteBundler(),
+  // 关键：把 TresJS 的 isCustomElement 编译器选项注入 @vitejs/plugin-vue
+  // 否则 <TresMesh> / <TresIcosahedronGeometry> 等会被 Vue 当成未注册组件解析，3D 场景不会渲染
+  bundler: viteBundler({
+    vuePluginOptions: templateCompilerOptions,
+  }),
   plugins: [
     registerComponentsPlugin({
       componentsDir: path.resolve(__dirname, "./components"),

@@ -6,75 +6,85 @@
 
     <!-- ============== HERO ============== -->
     <section class="hero">
-      <div class="container">
-        <RevealSection direction="fade" :delay="0">
-          <div class="eyebrow">
-            <span class="eyebrow__dot" />
-            <span>v2.0 · 全栈开发者成长手册</span>
-          </div>
-        </RevealSection>
-
-        <RevealSection direction="up" :delay="80">
-          <h1 class="hero__title">
-            <span class="line">把每一行代码</span>
-            <span class="line">
-              沉淀成
-              <span class="gradient-text">可复用的知识</span>
-            </span>
-          </h1>
-        </RevealSection>
-
-        <RevealSection direction="up" :delay="180">
-          <p class="hero__sub">
-            覆盖 JavaScript、Vue、React、Flutter、Three.js、Rust、Golang
-            等全栈技术栈的个人知识库。
-            <br />
-            笔记 · 文档 · 教程 · 工具链，一站式积累与检索。
-          </p>
-        </RevealSection>
-
-        <RevealSection direction="up" :delay="280">
-          <div class="hero__cta">
-            <a href="/guide/start.html" class="btn btn--primary">
-              <span>开始探索</span>
-              <svg
-                viewBox="0 0 24 24"
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
-            <a href="/guide/index.html" class="btn btn--ghost">
-              <span>了解这个博客</span>
-            </a>
-          </div>
-        </RevealSection>
-
-        <RevealSection direction="up" :delay="400">
-          <div class="hero__meta">
-            <div class="meta-item">
-              <span class="meta-num">70+</span>
-              <span class="meta-label">技术笔记</span>
+      <div class="hero__container">
+        <!-- 左侧文本区 -->
+        <div class="hero__text">
+          <RevealSection direction="fade" :delay="0">
+            <div class="eyebrow">
+              <span class="eyebrow__dot" />
+              <span>v2.0 · 全栈开发者成长手册</span>
             </div>
-            <div class="meta-sep" />
-            <div class="meta-item">
-              <span class="meta-num">12</span>
-              <span class="meta-label">技术栈</span>
+          </RevealSection>
+
+          <RevealSection direction="up" :delay="80">
+            <h1 class="hero__title">
+              <span class="line">把每一行代码</span>
+              <span class="line">
+                沉淀成
+                <span class="gradient-text">可复用的知识</span>
+              </span>
+            </h1>
+          </RevealSection>
+
+          <RevealSection direction="up" :delay="180">
+            <p class="hero__sub">
+              覆盖 JavaScript、Vue、React、Flutter、Three.js、Rust、Golang
+              等全栈技术栈的个人知识库。
+              <br />
+              笔记 · 文档 · 教程 · 工具链，一站式积累与检索。
+            </p>
+          </RevealSection>
+
+          <RevealSection direction="up" :delay="280">
+            <div class="hero__cta">
+              <a href="/guide/start.html" class="btn btn--primary">
+                <span>开始探索</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+              <a href="/guide/index.html" class="btn btn--ghost">
+                <span>了解这个博客</span>
+              </a>
             </div>
-            <div class="meta-sep" />
-            <div class="meta-item">
-              <span class="meta-num">2022 →</span>
-              <span class="meta-label">持续更新</span>
+          </RevealSection>
+
+          <RevealSection direction="up" :delay="400">
+            <div class="hero__meta">
+              <div class="meta-item">
+                <span class="meta-num">70+</span>
+                <span class="meta-label">技术笔记</span>
+              </div>
+              <div class="meta-sep" />
+              <div class="meta-item">
+                <span class="meta-num">12</span>
+                <span class="meta-label">技术栈</span>
+              </div>
+              <div class="meta-sep" />
+              <div class="meta-item">
+                <span class="meta-num">2022 →</span>
+                <span class="meta-label">持续更新</span>
+              </div>
             </div>
-          </div>
-        </RevealSection>
+          </RevealSection>
+        </div>
+
+        <!-- 右侧 3D 动画区 -->
+        <div class="hero__visual">
+          <ClientOnly>
+            <HeroAnimation />
+          </ClientOnly>
+        </div>
       </div>
 
       <!-- 滚动指示器 -->
@@ -539,7 +549,9 @@ body.is-landing .VPFooter a:hover {
   color: #fff !important;
 }
 
-/* 5. 页面主内容区透明，去掉默认白底 */
+/* 5. 页面主内容区透明 + 去除默认主题的最大宽度限制
+ *    让 hero/landing 真正铺满到 viewport 左右边缘
+ *    其他 section 的内容继续通过 .container 内部 max-width 控制宽度 */
 body.is-landing .page,
 body.is-landing .home-content-container {
   background: transparent !important;
@@ -552,7 +564,32 @@ body.is-landing .home-content-container {
   width: 100% !important;
 }
 
-/* 6. 滚动条美化（仅在首页） */
+body.is-landing .theme-container,
+body.is-landing .theme-default-content {
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 6. 解除默认主题 home 页的宽度限制
+ *    theme-default 里 .vp-home { max-width: var(--homepage-width) } 默认 960px
+ *    导致首页内容被卡在屏幕中间、两侧留大片黑边
+ *    这里覆盖 CSS 变量 + 直接覆盖 .vp-home 的 max-width 双重保险 */
+body.is-landing {
+  --homepage-width: 1920px;
+}
+
+body.is-landing .vp-home {
+  max-width: 1920px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  /* 默认主题给 .vp-home 加了 padding: navbar 2rem 0，去掉左右 2rem 让 hero 能贴到边缘 */
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* 7. 滚动条美化（仅在首页） */
 body.is-landing::-webkit-scrollbar {
   width: 10px;
 }
@@ -637,8 +674,46 @@ body.is-landing::-webkit-scrollbar-thumb:hover {
 /* ============== HERO ============== */
 .hero {
   position: relative;
-  padding: 160px 0 120px;
-  text-align: center;
+  min-height: calc(100vh - 72px); /* 减去 navbar 高度 */
+  display: flex;
+  align-items: center;
+  padding: 60px 0;
+  width: 100%;
+}
+
+/* 不带 .container class 的独立样式 — 直接铺满 viewport 宽度 */
+.hero__container {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr; /* 左文稍宽，让标题能完整展示 */
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+  max-width: 100%;
+  padding: 0 clamp(24px, 5vw, 80px);
+  margin: 0;
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  max-width: 760px;
+}
+
+.hero__visual {
+  position: relative;
+  width: 100%;
+  height: 580px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 强制让 ClientOnly 的 placeholder / wrapper 撑满父容器，避免 SSR fallback 时高度为 0 */
+.hero__visual > * {
+  width: 100%;
+  height: 100%;
 }
 
 .eyebrow {
@@ -712,15 +787,15 @@ body.is-landing::-webkit-scrollbar-thumb:hover {
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.6);
   max-width: 640px;
-  margin: 0 auto 48px;
+  margin: 0 0 48px;
 }
 
 .hero__cta {
   display: flex;
   gap: 16px;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  margin-bottom: 80px;
+  margin-bottom: 56px;
 }
 
 .btn {
@@ -862,26 +937,35 @@ body.is-landing::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* ============== BENTO ============== */
+/* ============== BENTO ==============
+ * 用 grid-template-areas 明确每张卡片位置（不再依赖 span + auto-flow，
+ * 否则混合尺寸卡片容易在自动流中重叠或跳格）
+ *
+ * 布局：
+ *   ┌────┬────┬────┬────┐
+ *   │ a  │ a  │ b  │ b  │ row 1
+ *   │ a  │ a  │ c  │ d  │ row 2
+ *   │ e  │ e  │ f  │ f  │ row 3
+ *   └────┴────┴────┴────┘
+ */
 .bento {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas:
+    "a a b b"
+    "a a c d"
+    "e e f f";
   gap: 24px;
-  grid-auto-rows: minmax(180px, auto);
+  grid-auto-rows: minmax(220px, auto);
 }
 
-.bento__item {
-  grid-column: span 2;
-}
-
-.bento__item--lg {
-  grid-column: span 3;
-  grid-row: span 2;
-}
-
-.bento__item--md {
-  grid-column: span 3;
-}
+/* 用 nth-child 把 6 个 grid item 钉到 grid-template-areas 的 6 个区域 */
+.bento__item:nth-child(1) { grid-area: a; }
+.bento__item:nth-child(2) { grid-area: b; }
+.bento__item:nth-child(3) { grid-area: c; }
+.bento__item:nth-child(4) { grid-area: d; }
+.bento__item:nth-child(5) { grid-area: e; }
+.bento__item:nth-child(6) { grid-area: f; }
 
 .bento-card {
   position: relative;
@@ -1167,18 +1251,40 @@ body.is-landing::-webkit-scrollbar-thumb:hover {
 @media (max-width: 960px) {
   .bento {
     grid-template-columns: repeat(2, 1fr);
-  }
-  .bento__item,
-  .bento__item--md {
-    grid-column: span 2;
-  }
-  .bento__item--lg {
-    grid-column: span 2;
-    grid-row: span 1;
+    grid-template-areas:
+      "a a"
+      "b b"
+      "c c"
+      "d d"
+      "e e"
+      "f f";
+    gap: 20px;
+    grid-auto-rows: minmax(200px, auto);
   }
   .stats,
   .workflow {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .hero__container {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 6vw !important;
+  }
+  .hero__text {
+    text-align: center;
+    align-items: center;
+  }
+  .hero__cta {
+    justify-content: center;
+  }
+  .hero__meta {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero__visual {
+    height: 420px;
+    min-height: 420px;
+    order: -1;
   }
   .hero__meta {
     gap: 20px;
