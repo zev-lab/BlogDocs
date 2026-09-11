@@ -74,14 +74,24 @@ export default {
   ],
   "/react/": [
     {
-      text: "React",
-      children: ["/react/index.md"],
+      text: "React 从入门到精通",
+      children: [
+        "/react/basics.md",
+        "/react/hooks.md",
+        "/react/router_state.md",
+        "/react/advanced.md",
+        "/react/index.md",
+      ],
     },
   ],
   "/scss/": [
     {
-      text: "SCSS",
-      children: ["/scss/index.md"],
+      text: "SCSS 从入门到精通",
+      children: [
+        "/scss/index.md",
+        "/scss/basics.md",
+        "/scss/advanced.md",
+      ],
     },
   ],
   "/Golang/": [
@@ -125,16 +135,26 @@ export default {
   ],
   "/flutter/": [
     {
-      text: "Flutter",
-      children: ["/flutter/flutter第一天.md"],
+      text: "Flutter 从入门到精通",
+      children: [
+        "/flutter/flutter第一天.md",
+        "/flutter/widgets.md",
+        "/flutter/state.md",
+        "/flutter/network.md",
+        "/flutter/advanced.md",
+      ],
     },
   ],
   "/THREE/": [
     {
-      text: "Three.js",
+      text: "Three.js 从入门到精通",
       children: [
+        "/THREE/index.md",
+        "/THREE/geometry_material.md",
+        "/THREE/lighting.md",
         "/THREE/模型加载.md",
         "/THREE/射线检测.md",
+        "/THREE/advanced.md",
       ],
     },
   ],
