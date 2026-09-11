@@ -2,15 +2,13 @@
 
 Emacs的三种基本对象是:帧(frame)、窗口(window)、缓冲区(buffer)。
 
-## 基本命令网址 ()[https://w-lianfu.github.io/#num26]
+## [基本命令网址](https://w-lianfu.github.io/#num26)
 
-### ｓｐｃ　＝＝　空格  emacs 风格 '~~' M+ m
+### SPC == 空格 (Emacs 风格 '~~' M+ m)
 
-
-  
 ### C == CTRL
 
-### M　＝＝　ＥＳＣ
+### M == ESC
 
 # 退出emacs
 	C+x C+c
