@@ -25,3 +25,6 @@ package-lock.json
 *.sln
 *.sw?
 project.exe
+
+# WorkBuddy private workspace data
+.workbuddy/
